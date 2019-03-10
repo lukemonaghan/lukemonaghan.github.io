@@ -3,9 +3,8 @@ url: https://luke.monaghan.dev
 # Site settings
 title: Luke Monaghan
 email: luke@monaghan.dev
-description: "Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description."
+description: "Hi, I'm Luke Monaghan. Software Developer specialising in realtime engines, XR, "
 
-# Social networks usernames (many more available: google-plus, flickr, dribbble, pinterest, instagram, tumblr, linkedin, etc.)
 social:
   - title: twitter
     url: https://twitter.com/LukePMonaghan
@@ -13,12 +12,15 @@ social:
     url: https://www.facebook.com/lukepmonaghan
   - title: github
     url: https://github.com/lukemonaghan
-
+  - title: instagram
+    url: https://www.instagram.com/rangatangaa/
 
 collections:
   employers:
     permalink: /:path/
   skills:
+    permalink: /:path/
+  history:
     permalink: /:path/
 
 # Build settings
