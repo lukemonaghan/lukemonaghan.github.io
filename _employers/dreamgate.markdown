@@ -6,7 +6,7 @@ position: Server Gameplay Programmer
 duration: Feb 2016 - Jan 2018
 social:
   - title: website
-    url: http://dreamgatestudios.com/
+    url: https://dreamgatestudios.com/
   - title: facebook
     url: https://www.facebook.com/DreamgateStudios/
   - title: linkedin
