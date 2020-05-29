@@ -1,28 +1,43 @@
-url: https://luke.monaghan.dev
-
 # Site settings
 title: Luke Monaghan
-email: luke@monaghan.dev
-description: "Hi, I'm Luke Monaghan. Software Developer specialising in Realtime Game Engines, XR (AR, VR), Shaders, "
+description: 'Luke Monaghan Portfolio'
+url: 'http://lukemonaghan.com'
+baseurl: ''
+# google_analytics: 'UA-XXXXXX-X'
+# disqus_shortname: 'your-disqus-name'
 
-social:
-  - title: twitter
-    url: https://twitter.com/LukePMonaghan
-  - title: facebook
-    url: https://www.facebook.com/lukepmonaghan
-  - title: github
-    url: https://github.com/lukemonaghan
-  - title: instagram
-    url: https://www.instagram.com/rangatangaa/
+author:
+  name: 'Luke Monaghan'
+  email: webcontact@lukemonaghan.com
+  twitter_username: lukepmonaghan
+  facebook_username: lukepmonaghan
+  github_username:  lukemonaghan
+  linkedin_username:  lmonaghan
 
-collections:
-  employers:
-    permalink: /:path/
-  skills:
-    permalink: /:path/
-  history:
-    permalink: /:path/
+defaults:
+  -
+    scope:
+      path: ''
+      type: 'posts'
+    values:
+        layout: 'post'
 
 # Build settings
+destination: _site
+paginate: 10
+permalink: /:year/:title/
 markdown: kramdown
-permalink: pretty
+highlighter: rouge
+
+sass:
+    sass_dir: _sass
+    style: compressed
+
+kramdown:
+  # use Github Flavored Markdown
+  input: GFM
+  # do not replace newlines by <br>s
+  hard_wrap: false
+
+plugins: ['jekyll-paginate']
+exclude: ['README.md', 'Gemfile', 'Gemfile.lock', 'screenshot.png']
