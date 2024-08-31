@@ -17,7 +17,7 @@ export default function BannerImage() {
       >
       <Box
         sx={{
-          backgroundColor: 'rgba(0, 0, 0, 0.3)',
+          backgroundColor: 'rgba(0, 0, 0, 0.4)',
           height: '100vh',
           backdropFilter: 'blur(5px)',
           display: 'flex',
