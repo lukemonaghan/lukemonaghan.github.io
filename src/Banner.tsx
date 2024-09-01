@@ -8,15 +8,6 @@ export default function BannerImage() {
     return (
       <Box
         sx={{
-          backgroundImage: 'url(cover2.png)',
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          display: 'flex',
-          flexDirection: 'column',
-        }}
-      >
-      <Box
-        sx={{
           backgroundColor: 'rgba(0, 0, 0, 0.4)',
           height: '100vh',
           backdropFilter: 'blur(5px)',
@@ -24,7 +15,7 @@ export default function BannerImage() {
           flexDirection: 'column',
           justifyContent: 'center',
           alignItems: 'center',
-        }}       
+        }}
       >
         <CardMedia
           component="img"
@@ -38,7 +29,7 @@ export default function BannerImage() {
         <Typography sx={{
           textShadow: '8px 8px 8px rgba(0, 0, 0, 1)',
           fontWeight: '600'
-        }} variant="h2" color="text.primary">
+        }} variant="h1" color="text.primary">
           Luke Monaghan
         </Typography>
         <Typography sx={{
@@ -59,6 +50,6 @@ export default function BannerImage() {
             <EmailIcon />
           </Button>
         </ButtonGroup>
-      </Box></Box>
+      </Box>
     );
   }
