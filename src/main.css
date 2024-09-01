@@ -5,3 +5,11 @@ body {
     background-color: black;
     scrollbar-color: #333333 #111111;
 }
+
+body {
+    /** background image */
+    background-image: url("../cover.jpg");
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+}
