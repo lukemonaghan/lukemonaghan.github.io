@@ -1,6 +1,6 @@
 import { Box } from "@mui/material";
 
-export default function BlurContainer({ children }: { children: Array<JSX.Element> }) {
+export default function BlurContainer({ children }: { children: JSX.Element | JSX.Element[] }) {
     return (
         <Box padding={1} sx={{
             borderRadius: 4,

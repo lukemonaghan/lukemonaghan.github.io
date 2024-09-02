@@ -1,7 +1,7 @@
 import { Box } from "@mui/material";
 import BlurContainer from "./BlurContainer";
 
-export default function ImageContainer({ children, background }: { children: JSX.Element, background: string }) {
+export default function ImageContainer({ children, background }: { children: JSX.Element | JSX.Element[], background: string }) {
     return (
         <Box margin={2} sx={{
             borderRadius: 4,
