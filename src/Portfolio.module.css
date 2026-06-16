@@ -33,12 +33,6 @@
     gap: 1rem;
 }
 
-.imageRow {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1rem;
-}
-
 .skillsRow {
     display: flex;
     flex-wrap: wrap;

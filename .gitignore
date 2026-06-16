@@ -12,6 +12,10 @@ dist
 dist-ssr
 *.local
 
+# Generated from work-brain submodule at build time
+src/data/experience.generated.json
+public/work-brain/
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
