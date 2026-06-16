@@ -1,48 +1,57 @@
 import { Box, Button, ButtonGroup, CardMedia, Typography } from '@mui/material';
+import { motion } from 'framer-motion';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import EmailIcon from '@mui/icons-material/Email';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Spacer from './Spacer';
+import { fadeInUp, staggerContainer } from './motion';
+import glassStyles from './glassStyle.module.css';
+import styles from './Banner.module.css';
 
 export default function BannerImage() {
   return (
     <Box
-      sx={{
-        backgroundColor: 'rgba(0, 0, 0, 0.4)',
-        height: '100vh',
-        backdropFilter: 'blur(5px)',
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center',
-      }}
+      component={motion.div}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+      className={`${glassStyles.glassPanel} ${styles.banner}`}
     >
-      <CardMedia
-        component="img"
-        alt="Banner Image"
-        image="profile.png"
-        sx={{
-          width: '170px',
-        }}
-      />
-      <Spacer />
-      <Typography sx={{
-        textShadow: '8px 8px 8px rgba(0, 0, 0, 1)',
-        fontWeight: '600'
-      }} variant="h1" color="text.primary">
-        Luke Monaghan
-      </Typography>
-      <Typography sx={{
-        textShadow: '8px 8px 8px rgba(0, 0, 0, 1)',
-        fontWeight: '300'
-      }} variant="h5" color="text.primary">
-        Making rocks smart daily
-      </Typography>
-      <Spacer />
-      {Links()}
-      <Spacer size={4} />
-      {LearnMore()}
+      <motion.div
+        initial="hidden"
+        animate="visible"
+        variants={staggerContainer}
+        className={styles.staggerWrap}
+      >
+        <motion.div variants={fadeInUp} whileHover={{ scale: 1.05 }}>
+          <CardMedia
+            component="img"
+            alt="Banner Image"
+            image="profile.png"
+            className={styles.profileImage}
+          />
+        </motion.div>
+        <Spacer />
+        <motion.div variants={fadeInUp}>
+          <Typography className={styles.titleText} variant="h1" color="text.primary">
+            Luke Monaghan
+          </Typography>
+        </motion.div>
+        <motion.div variants={fadeInUp}>
+          <Typography className={styles.subtitleText} variant="h5" color="text.primary">
+            Making rocks smart daily
+          </Typography>
+        </motion.div>
+        <Spacer />
+        <motion.div variants={fadeInUp}>
+          {Links()}
+        </motion.div>
+        <Spacer size={4} />
+        <motion.div variants={fadeInUp}>
+          {LearnMore()}
+        </motion.div>
+      </motion.div>
     </Box>
   );
 }
@@ -50,20 +59,25 @@ export default function BannerImage() {
 function Links() {
   return <ButtonGroup aria-label="Contact Buttons">
       <Button color="secondary" href="https://github.com/lukemonaghan" target="_blank">
-          Github <GitHubIcon sx={{paddingLeft: "8px"}} />
+          Github <GitHubIcon className={styles.iconSpacing} />
       </Button>
       <Button color="secondary" href="https://www.linkedin.com/in/lmonaghan" target="_blank">
-          Linkedin <LinkedInIcon sx={{paddingLeft: "8px"}} />
+          Linkedin <LinkedInIcon className={styles.iconSpacing} />
       </Button>
       <Button color="secondary" href="mailto:portfolio@lukemonaghan.com">
-          Email <EmailIcon sx={{paddingLeft: "8px"}} />
+          Email <EmailIcon className={styles.iconSpacing} />
       </Button>
   </ButtonGroup>;
 }
 
 function LearnMore() {
-  return <Box color="text.primary" sx={{ textAlign: 'center' }}>
+  return <Box color="text.primary" className={styles.learnMore}>
     <Typography color="text.primary" variant="h6">Scroll to learn more about me</Typography>
-    <ExpandMoreIcon sx={{ height: "2em", width: "2em" }} />
+    <motion.div
+      animate={{ y: [0, 8, 0] }}
+      transition={{ duration: 1.5, repeat: Infinity, ease: 'easeInOut' }}
+    >
+      <ExpandMoreIcon className={styles.scrollIcon} />
+    </motion.div>
   </Box>;
 }

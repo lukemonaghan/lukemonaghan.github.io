@@ -1,0 +1,37 @@
+.wrapper {
+    padding: 1rem;
+}
+
+.panel {
+    min-height: 360px;
+    margin: 0.5rem;
+    padding: 1.5rem 3rem;
+    border-radius: 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+@media (max-width: 900px) {
+    .panel {
+        padding: 1.5rem;
+    }
+}
+
+.heading {
+    font-weight: 600;
+}
+
+.subheading {
+    max-width: 720px;
+    font-weight: 300;
+}
+
+.ctaButton {
+    padding: 12px 32px;
+}
+
+.iconSpacing {
+    padding-left: 8px;
+}

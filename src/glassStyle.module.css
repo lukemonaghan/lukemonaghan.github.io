@@ -1,0 +1,13 @@
+.glassPanel {
+    background-color: rgba(0, 0, 0, 0.45);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+}
+
+/* Use for cards nested inside an already-blurred, animated ancestor.
+   Stacking a second backdrop-filter inside an opacity-animating parent
+   renders inconsistently across browsers, so nested cards get a solid
+   panel instead of their own blur. */
+.innerPanel {
+    background-color: rgba(0, 0, 0, 0.55);
+}

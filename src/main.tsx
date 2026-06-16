@@ -16,9 +16,22 @@ const theme = createTheme({
   },
   typography: {
     fontFamily: [
-      "Nunito Sans", 
+      "Nunito Sans",
       "sans-serif"
     ].join(','),
+  },
+  components: {
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          transition: 'transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s ease',
+          '&:hover': {
+            transform: 'translateY(-2px)',
+            boxShadow: '0 8px 16px rgba(236, 64, 122, 0.3)',
+          },
+        },
+      },
+    },
   },
 });
 

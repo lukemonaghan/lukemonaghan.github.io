@@ -1,0 +1,35 @@
+.navWrapper {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 10;
+}
+
+.navBar {
+    padding: 12px;
+    display: flex;
+    justify-content: center;
+}
+
+.link {
+    text-decoration: none;
+    font-weight: 500;
+    position: relative;
+    padding-bottom: 4px;
+}
+
+.link::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 0%;
+    height: 2px;
+    background-color: #ec407a;
+    transition: width 0.3s ease;
+}
+
+.link:hover::after {
+    width: 100%;
+}

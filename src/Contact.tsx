@@ -1,44 +1,43 @@
-import { Box, Button, ButtonGroup, Container, Typography } from '@mui/material';
+import { Box, Button, Container, Stack, Typography } from '@mui/material';
+import { motion } from 'framer-motion';
 
 import GitHubIcon from '@mui/icons-material/GitHub';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import EmailIcon from '@mui/icons-material/Email';
-import ImageContainer from './ImageContainer';
+import SectionHeader from './SectionHeader';
 import Spacer from './Spacer';
+import { fadeInUp, viewportOnce } from './motion';
+import glassStyles from './glassStyle.module.css';
+import styles from './Contact.module.css';
 
 export default function Contact() {
     return (
-        <Container id="contact" sx={{ padding: 2 }}>
-            <ImageContainer background='contact_background.jpg'>
-                <Typography padding={2} variant="h2" color="text.primary">How can we get in contact?</Typography>
-            </ImageContainer>
-            <Box padding={1} margin={1} sx={{
-                minHeight: '128px',
-                borderRadius: 4,
-                backgroundColor: 'rgba(0, 0, 0, 0.4)',
-                backdropFilter: 'blur(5px)',
-                boxShadow: 8,
-            }}>
+        <Container id="contact" className={styles.wrapper}>
+            <SectionHeader>How can we get in contact?</SectionHeader>
+            <Box
+                component={motion.div}
+                initial="hidden"
+                whileInView="visible"
+                viewport={viewportOnce}
+                variants={fadeInUp}
+                boxShadow={8}
+                className={`${styles.panel} ${glassStyles.glassPanel}`}
+            >
+                <Typography variant="h3" color="text.primary" className={styles.heading}>Let's build something great together</Typography>
                 <Spacer />
-                <Typography variant="body" color="text.primary">If you're looking for someone who is passionate about creating immersive experiences and has a strong technical background, I'd love to hear from you. Let's connect and discuss how we can collaborate on your next project.</Typography>
-                <Box sx={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                }}>
-                    <Spacer />
-                    <ButtonGroup aria-label="Contact Buttons">
-                        <Button color="secondary" href="https://github.com/lukemonaghan" target="_blank">
-                            Github <GitHubIcon sx={{ paddingLeft: "8px" }} />
-                        </Button>
-                        <Button color="secondary" href="https://www.linkedin.com/in/lmonaghan" target="_blank">
-                            Linkedin <LinkedInIcon sx={{ paddingLeft: "8px" }} />
-                        </Button>
-                        <Button color="secondary" href="mailto:portfolio@lukemonaghan.com">
-                            Email <EmailIcon sx={{ paddingLeft: "8px" }} />
-                        </Button>
-                    </ButtonGroup>
-                </Box>
+                <Typography variant="h6" color="text.primary" className={styles.subheading}>If you're looking for someone who is passionate about creating immersive experiences and has a strong technical background, I'd love to hear from you. Let's connect and discuss how we can collaborate on your next project.</Typography>
+                <Spacer size={3} />
+                <Stack direction="row" spacing={3} useFlexGap flexWrap="wrap" justifyContent="center">
+                    <Button size="large" variant="contained" color="secondary" href="mailto:portfolio@lukemonaghan.com" className={styles.ctaButton}>
+                        Email Me <EmailIcon className={styles.iconSpacing} />
+                    </Button>
+                    <Button size="large" variant="outlined" color="secondary" href="https://github.com/lukemonaghan" target="_blank" className={styles.ctaButton}>
+                        Github <GitHubIcon className={styles.iconSpacing} />
+                    </Button>
+                    <Button size="large" variant="outlined" color="secondary" href="https://www.linkedin.com/in/lmonaghan" target="_blank" className={styles.ctaButton}>
+                        Linkedin <LinkedInIcon className={styles.iconSpacing} />
+                    </Button>
+                </Stack>
             </Box>
         </Container>
     );

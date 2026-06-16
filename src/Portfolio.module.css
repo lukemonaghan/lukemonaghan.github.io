@@ -1,0 +1,47 @@
+.wrapper {
+    padding: 1rem;
+}
+
+.companyCard {
+    padding: 1rem;
+    margin: 1rem;
+    border-radius: 16px;
+}
+
+.companyHeaderRow {
+    display: flex;
+    align-items: center;
+}
+
+.companyLogo {
+    width: 96px !important;
+    border-radius: 16px;
+}
+
+.projectsWrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.projectCard {
+    padding: 0.5rem;
+    min-height: 128px;
+    border-radius: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.imageRow {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.skillsRow {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.5rem;
+}

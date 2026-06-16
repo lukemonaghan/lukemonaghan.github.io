@@ -1,0 +1,22 @@
+.wrapper {
+    padding: 1rem;
+}
+
+.panel {
+    padding: 0.5rem;
+    margin: 1rem;
+    min-height: 128px;
+    border-radius: 16px;
+}
+
+.imageBox {
+    width: 50%;
+    border-radius: 16px;
+}
+
+.image {
+    width: 256px !important;
+    height: 100% !important;
+    border-radius: 16px;
+    object-position: 35% 50%;
+}

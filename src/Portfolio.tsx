@@ -1,7 +1,12 @@
-import { Box, Button, ButtonGroup, CardMedia, Container, Link, Stack, Step, StepLabel, Stepper, Typography } from "@mui/material";
+import { Box, CardMedia, Chip, Container, Link, Stack, Step, StepLabel, Stepper, Typography } from "@mui/material";
+import { motion } from "framer-motion";
 import Spacer from "./Spacer";
 import * as Models from "./Models/Experience";
-import ImageContainer from './ImageContainer';
+import SectionHeader from './SectionHeader';
+import { fadeInUp, staggerContainer, viewportOnce } from './motion';
+import glassStyles from './glassStyle.module.css';
+import hoverStyles from './hoverStyle.module.css';
+import styles from './Portfolio.module.css';
 
 const state = new Models.Experience({
     companies: [
@@ -127,10 +132,8 @@ const state = new Models.Experience({
 
 export default function Portfolio() {
     return (
-        <Container sx={{ padding: 2 }}>
-            <ImageContainer background='experience_background.jpg'>
-                <Typography padding={2} variant="h2" color="text.primary">Oh yeah? Prove it.</Typography>
-            </ImageContainer>
+        <Container className={styles.wrapper}>
+            <SectionHeader>Oh yeah? Prove it.</SectionHeader>
             <Experience/>
         </Container>
     );
@@ -138,39 +141,49 @@ export default function Portfolio() {
 
 function Experience() {
     return (
-        <Box>
-            {state.companies.map((company, index) => (
-                <Box key={index} padding={2} margin={2} sx={{
-                    borderRadius: 4,
-                    backgroundColor: 'rgba(0, 0, 0, 0.4)',
-                    backdropFilter: 'blur(10px)',
-                    boxShadow: 8,
-                }}>
-                    {CompanyHeader(company)}
-                    <Spacer />
-                    {CompanyRoles(company)}
-                    <Spacer />
-                    {CompanyProjects(company)}
-                </Box>
-            ))}
-        </Box>
+        <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+            whileInView="visible"
+            viewport={viewportOnce}
+            variants={staggerContainer}
+        >
+            <Box>
+                {state.companies.map((company, index) => (
+                    <Box
+                        key={index}
+                        component={motion.div}
+                        variants={fadeInUp}
+                        boxShadow={8}
+                        className={`${styles.companyCard} ${glassStyles.glassPanel}`}
+                    >
+                        {CompanyHeader(company)}
+                        <Spacer />
+                        {CompanyRoles(company)}
+                        <Spacer />
+                        {CompanyProjects(company)}
+                    </Box>
+                ))}
+            </Box>
+        </motion.div>
     );
 }
 
 function CompanyHeader(company: Models.Company) {
-    return <Stack direction="row" spacing={2} style={{ display: 'flex', alignItems: 'center' }}>
+    return <Stack direction="row" spacing={2} className={styles.companyHeaderRow}>
         <CardMedia
             component="img"
             image={company.url}
-            sx={{ width: '96px', borderRadius: 4 }} />
+            className={styles.companyLogo} />
         <Stack>
             <Typography variant="h4" color="text.primary">{company.title}</Typography>
             <Spacer size={0.5} />
-            <Typography variant="body" color="text.primary">{company.kind} | {company.location} | {company.date}</Typography>
+            <Typography variant="body1" color="text.primary">{company.kind} | {company.location} | {company.date}</Typography>
             <Spacer size={0.5} />
             <Link color="text.primary" href={company.siteUrl}>{company.siteUrl}</Link>
             <Spacer size={0.5} />
-            <Typography variant="body" color="text.primary">{company.description}</Typography>
+            <Typography variant="body1" color="text.primary">{company.description}</Typography>
         </Stack>
     </Stack>;
 }
@@ -188,43 +201,29 @@ function CompanyRoles(company: Models.Company) {
 
 function CompanyProjects(company: Models.Company) {
     return (
-        <Container>
+        <Container className={styles.projectsWrapper}>
             {company.projects.map((project, index) => (
-                <Box key={index} padding={1} margin={1} sx={{
-                    minHeight: '128px',
-                    borderRadius: 4,
-                    backgroundColor: 'rgba(0, 0, 0, 0.4)',
-                    backdropFilter: 'blur(5px)',
-                    boxShadow: 8,
-                }}>
-                    <Stack direction="row" spacing={2} >
+                <Box
+                    key={index}
+                    boxShadow={8}
+                    className={`${styles.projectCard} ${glassStyles.innerPanel} ${hoverStyles.liftHover}`}
+                >
+                    <Box className={styles.imageRow}>
                         {project.urls.map((url, index) => (
-                            <CardMedia
-                                key={index}
-                                component="img"
-                                image={url}
-                                height='256px' sx={{
-                                    borderRadius: 4,
-                                }} />
+                            <Box key={index} className={hoverStyles.zoomImageContainer}>
+                                <CardMedia
+                                    component="img"
+                                    image={url}
+                                    height='256px' />
+                            </Box>
                         ))}
-                    </Stack>
-                    <Spacer />
+                    </Box>
                     <Typography variant="h5" color="text.primary">{project.title}</Typography>
-                    <Spacer />
-                    <Typography variant="body" color="text.primary">{project.description}</Typography>
-                    <Spacer />
-                    <Box sx={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        alignItems: 'center',
-                    }}>
-                        <ButtonGroup>
-                            {project.skills.map((skill, index) => (
-                                <Button key={index} color="secondary" target="_blank">
-                                    {skill}
-                                </Button>
-                            ))}
-                        </ButtonGroup>
+                    <Typography variant="body1" color="text.primary">{project.description}</Typography>
+                    <Box className={styles.skillsRow}>
+                        {project.skills.map((skill, index) => (
+                            <Chip key={index} label={skill} color="secondary" variant="outlined" />
+                        ))}
                     </Box>
                 </Box>
             ))}
