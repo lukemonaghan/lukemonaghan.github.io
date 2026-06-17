@@ -9,10 +9,23 @@ import styles from './Portfolio.module.css';
 import generatedExperience from './data/experience.generated.json';
 import ImageCarousel from './ImageCarousel';
 
+const GROUP_COLORS = [
+    'oklch(70% 0.13 0)',
+    'oklch(70% 0.13 200)',
+    'oklch(70% 0.13 55)',
+    'oklch(70% 0.13 155)',
+    'oklch(70% 0.13 290)',
+];
+
+type SkillGroup = {
+    category: string;
+    items: string[];
+};
+
 type Project = {
     title: string;
     description: string;
-    skills: string[];
+    skillGroups: SkillGroup[];
     images: string[];
 };
 
@@ -110,11 +123,17 @@ function CompanyProjects({ projects }: Company) {
                     <ImageCarousel images={project.images} />
                     <Typography variant="h5" color="text.primary">{project.title}</Typography>
                     <Typography variant="body1" color="text.primary">{project.description}</Typography>
-                    <Box className={styles.skillsRow}>
-                        {project.skills.map((skill, index) => (
-                            <Chip key={index} label={skill} color="secondary" variant="outlined" />
-                        ))}
-                    </Box>
+                    {project.skillGroups.length > 0 && (
+                        <Box className={styles.skillsRow}>
+                            {project.skillGroups.flatMap((group, gi) =>
+                                group.items.map((skill, si) => (
+                                    <Chip key={`${gi}-${si}`} label={skill} variant="outlined" size="small"
+                                        sx={{ color: 'white', borderColor: GROUP_COLORS[gi % GROUP_COLORS.length] }}
+                                    />
+                                ))
+                            )}
+                        </Box>
+                    )}
                 </Box>
             ))}
         </Container>

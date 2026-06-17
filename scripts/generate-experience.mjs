@@ -37,6 +37,24 @@ function extractTitle(content, fallback) {
     return match ? match[1].trim() : fallback;
 }
 
+// Parse the | **Category** | [[Item1]], [[Item2]] | table, skipping Capabilities rows.
+function parseSkillTable(content) {
+    const groups = [];
+    for (const line of content.split("\n")) {
+        // Only match rows where the second cell contains [[wiki-link]] syntax (skill entries).
+        const m = line.match(/^\|\s*\*\*([^*]+)\*\*\s*\|\s*(\[\[.+?)\s*\|?\s*$/);
+        if (!m) continue;
+        const category = m[1].trim();
+        if (/^capabilities$/i.test(category)) continue;
+        const items = m[2]
+            .split(",")
+            .map((s) => s.replace(/\[\[([^\]]+)\]\]/g, "$1").trim())
+            .filter(Boolean);
+        if (items.length) groups.push({ category, items });
+    }
+    return groups;
+}
+
 function extractSection(content, heading) {
     const lines = content.split("\n");
     const start = lines.findIndex((l) => l.trim().toLowerCase().startsWith(`## ${heading}`.toLowerCase()));
@@ -122,7 +140,7 @@ for (const { data, content, file } of projectDocs) {
     companies[key].projects.push({
         title: extractTitle(content, path.basename(file, ".md")),
         description: extractSection(content, "Overview"),
-        skills: data.stack ?? [],
+        skillGroups: parseSkillTable(content),
         images: (data.images ?? []).map(copyAsset).filter(Boolean),
     });
 }
