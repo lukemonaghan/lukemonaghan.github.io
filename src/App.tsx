@@ -9,15 +9,15 @@ import Nav from './Nav';
 export default function App() {
   return (
     <Stack>
-      <Nav></Nav>
-      <BannerImage></BannerImage>
+      <Nav />
+      <BannerImage />
       <Box id="about">
-        <AboutMe></AboutMe>
+        <AboutMe />
       </Box>
       <Box id="portfolio">
-        <Portfolio></Portfolio>
+        <Portfolio />
       </Box>
-      <Contact></Contact>
+      <Contact />
       <Spacer size={20} />
     </Stack>
   );

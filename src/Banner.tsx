@@ -5,7 +5,7 @@ import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import EmailIcon from '@mui/icons-material/Email';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Spacer from './Spacer';
-import { fadeInUp, staggerContainer } from './motion';
+import { easeOut, fadeInUp, staggerContainer } from './motion';
 import glassStyles from './glassStyle.module.css';
 import styles from './Banner.module.css';
 
@@ -15,7 +15,7 @@ export default function BannerImage() {
       component={motion.div}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+      transition={{ duration: 0.5, ease: easeOut }}
       className={`${glassStyles.glassPanel} ${styles.banner}`}
     >
       <motion.div
@@ -45,11 +45,11 @@ export default function BannerImage() {
         </motion.div>
         <Spacer />
         <motion.div variants={fadeInUp}>
-          {Links()}
+          <Links />
         </motion.div>
         <Spacer size={4} />
         <motion.div variants={fadeInUp}>
-          {LearnMore()}
+          <LearnMore />
         </motion.div>
       </motion.div>
     </Box>

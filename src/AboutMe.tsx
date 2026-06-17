@@ -20,7 +20,7 @@ export default function AboutMe() {
                 boxShadow={8}
                 className={`${styles.panel} ${glassStyles.glassPanel} ${hoverStyles.borderStyle}`}
             >
-                <Stack direction="row">
+                <Stack direction={{ xs: 'column', sm: 'row' }}>
                     <Box className={`${styles.imageBox} ${hoverStyles.liftHover}`}>
                         <CardMedia
                             component="img"

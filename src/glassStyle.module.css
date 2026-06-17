@@ -1,7 +1,7 @@
 .glassPanel {
-    background-color: rgba(0, 0, 0, 0.45);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
+    background-color: rgba(0, 0, 0, 0.75);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
 }
 
 /* Use for cards nested inside an already-blurred, animated ancestor.
@@ -9,5 +9,5 @@
    renders inconsistently across browsers, so nested cards get a solid
    panel instead of their own blur. */
 .innerPanel {
-    background-color: rgba(0, 0, 0, 0.55);
+    background-color: rgba(0, 0, 0, 0.4);
 }

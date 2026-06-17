@@ -10,13 +10,40 @@
 }
 
 .imageBox {
-    width: 50%;
+    width: 100%;
+    flex-shrink: 0;
     border-radius: 16px;
 }
 
 .image {
-    width: 256px !important;
-    height: 100% !important;
+    width: 100% !important;
+    height: 280px !important;
     border-radius: 16px;
+    object-fit: cover;
     object-position: 35% 50%;
+}
+
+/* sm — side by side, image fills panel height */
+@media (min-width: 600px) {
+    .imageBox {
+        width: 260px;
+    }
+
+    .image {
+        height: 100% !important;
+    }
+}
+
+/* md */
+@media (min-width: 900px) {
+    .imageBox {
+        width: 300px;
+    }
+}
+
+/* lg */
+@media (min-width: 1200px) {
+    .imageBox {
+        width: 340px;
+    }
 }

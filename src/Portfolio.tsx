@@ -1,4 +1,4 @@
-import { Box, CardMedia, Chip, Container, Link, Stack, Step, StepLabel, Stepper, Typography } from "@mui/material";
+import { Box, CardMedia, Chip, Container, Divider, Link, Stack, Step, StepLabel, Stepper, Typography } from "@mui/material";
 import { motion } from "framer-motion";
 import Spacer from "./Spacer";
 import SectionHeader from './SectionHeader';
@@ -58,11 +58,11 @@ function Experience() {
                         boxShadow={8}
                         className={`${styles.companyCard} ${glassStyles.glassPanel}`}
                     >
-                        {CompanyHeader(company)}
-                        <Spacer />
-                        {CompanyRoles(company)}
-                        <Spacer />
-                        {CompanyProjects(company)}
+                        <CompanyHeader {...company} />
+                        <Divider sx={{ my: 3, borderColor: 'rgba(236,64,122,0.2)' }} />
+                        <CompanyRoles {...company} />
+                        <Divider sx={{ my: 3, borderColor: 'rgba(236,64,122,0.2)' }} />
+                        <CompanyProjects {...company} />
                     </Box>
                 ))}
             </Box>
@@ -70,27 +70,27 @@ function Experience() {
     );
 }
 
-function CompanyHeader(company: Company) {
+function CompanyHeader({ logo, title, kind, location, date, siteUrl, description }: Company) {
     return <Stack direction="row" spacing={2} className={styles.companyHeaderRow}>
-        {company.logo && <CardMedia
+        {logo && <CardMedia
             component="img"
-            image={company.logo}
+            image={logo}
             className={styles.companyLogo} />}
         <Stack>
-            <Typography variant="h4" color="text.primary">{company.title}</Typography>
+            <Typography variant="h4" color="text.primary">{title}</Typography>
             <Spacer size={0.5} />
-            <Typography variant="body1" color="text.primary">{company.kind} | {company.location} | {company.date}</Typography>
+            <Typography variant="body1" color="text.primary">{kind} | {location} | {date}</Typography>
             <Spacer size={0.5} />
-            {company.siteUrl && <Link color="text.primary" href={company.siteUrl}>{company.siteUrl}</Link>}
+            {siteUrl && <Link color="text.primary" href={siteUrl}>{siteUrl}</Link>}
             <Spacer size={0.5} />
-            <Typography variant="body1" color="text.primary">{company.description}</Typography>
+            <Typography variant="body1" color="text.primary">{description}</Typography>
         </Stack>
     </Stack>;
 }
 
-function CompanyRoles(company: Company) {
-    return <Stepper activeStep={10} color="secondary" alternativeLabel>
-        {company.roles.map((role, index) => (
+function CompanyRoles({ roles }: Company) {
+    return <Stepper activeStep={roles.length} color="secondary" alternativeLabel>
+        {roles.map((role, index) => (
             <Step key={index}>
                 <StepLabel>{role.position}</StepLabel>
             </Step>
@@ -98,11 +98,10 @@ function CompanyRoles(company: Company) {
     </Stepper>;
 }
 
-
-function CompanyProjects(company: Company) {
+function CompanyProjects({ projects }: Company) {
     return (
         <Container className={styles.projectsWrapper}>
-            {company.projects.map((project, index) => (
+            {projects.map((project, index) => (
                 <Box
                     key={index}
                     boxShadow={8}

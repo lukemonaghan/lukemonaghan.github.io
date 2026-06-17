@@ -5,6 +5,7 @@
 }
 
 .scroller {
+    position: relative;
     display: flex;
     align-items: center;
     gap: 1rem;
@@ -12,10 +13,12 @@
     overflow-y: hidden;
     scroll-snap-type: x mandatory;
     -webkit-overflow-scrolling: touch;
+    /* padding must be large enough that the first item's snap position is reachable
+       (i.e. padding ≥ (clientWidth − itemWidth) / 2). 25% covers items up to 50% wide. */
     padding: 0.5rem 25%;
     cursor: grab;
     scrollbar-width: none;
-    touch-action: pan-y;
+    touch-action: pan-x pan-y;
 }
 
 .scroller::-webkit-scrollbar {
@@ -27,18 +30,19 @@
 }
 
 .dragging {
-    /* Scroll-snap fights programmatic scrollLeft writes mid-drag; disable while dragging
-       and let it re-engage once the gesture ends and the item naturally settles. */
     scroll-snap-type: none;
     cursor: grabbing;
 }
 
 .item {
     flex: 0 0 auto;
+    width: 50vw;
+    aspect-ratio: 16 / 10;
     scroll-snap-align: center;
     scroll-snap-stop: always;
     border-radius: 16px;
     overflow: hidden;
+    background: rgba(0, 0, 0, 0.3);
     opacity: 0.5;
     transform: scale(0.85);
     transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.35s ease;
@@ -46,8 +50,9 @@
 }
 
 .item img {
-    height: 256px;
-    width: auto;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
     display: block;
     pointer-events: none;
     user-select: none;
@@ -56,6 +61,18 @@
 .item.active {
     opacity: 1;
     transform: scale(1.05);
+}
+
+@media (min-width: 600px) {
+    .item {
+        width: 340px;
+    }
+}
+
+@media (min-width: 900px) {
+    .item {
+        width: 420px;
+    }
 }
 
 .dots {

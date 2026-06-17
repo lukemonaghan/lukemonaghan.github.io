@@ -7,7 +7,7 @@ export default function ImageCarousel({ images }: { images: string[] }) {
     const itemRefs = useRef<(HTMLDivElement | null)[]>([]);
     const [activeIndex, setActiveIndex] = useState(0);
     const [isDragging, setIsDragging] = useState(false);
-    const dragState = useRef<{ startX: number; startScroll: number } | null>(null);
+    const dragState = useRef<{ startX: number; startY: number; startScroll: number; axis: 'h' | 'v' | null } | null>(null);
     const draggedDistance = useRef(0);
 
     useEffect(() => {
@@ -39,8 +39,21 @@ export default function ImageCarousel({ images }: { images: string[] }) {
             const scroller = scrollerRef.current;
             if (!dragState.current || !scroller) return;
             const dx = e.clientX - dragState.current.startX;
-            draggedDistance.current = Math.abs(dx);
-            scroller.scrollLeft = dragState.current.startScroll - dx;
+            const dy = e.clientY - dragState.current.startY;
+            // Lock axis on first significant movement.
+            if (!dragState.current.axis && (Math.abs(dx) > 4 || Math.abs(dy) > 4)) {
+                dragState.current.axis = Math.abs(dy) > Math.abs(dx) ? 'v' : 'h';
+            }
+            // If vertical, cancel and let the page scroll.
+            if (dragState.current.axis === 'v') {
+                dragState.current = null;
+                setIsDragging(false);
+                return;
+            }
+            if (dragState.current.axis === 'h') {
+                draggedDistance.current = Math.abs(dx);
+                scroller.scrollLeft = dragState.current.startScroll - dx;
+            }
         }
         function onUp() {
             dragState.current = null;
@@ -56,9 +69,11 @@ export default function ImageCarousel({ images }: { images: string[] }) {
     }, [isDragging]);
 
     function onPointerDown(e: ReactPointerEvent<HTMLDivElement>) {
+        // Touch devices use native horizontal scroll (pan-x); only wire up JS drag for mouse.
+        if (e.pointerType !== 'mouse') return;
         const scroller = scrollerRef.current;
         if (!scroller) return;
-        dragState.current = { startX: e.clientX, startScroll: scroller.scrollLeft };
+        dragState.current = { startX: e.clientX, startY: e.clientY, startScroll: scroller.scrollLeft, axis: null };
         draggedDistance.current = 0;
         setIsDragging(true);
     }
@@ -67,10 +82,15 @@ export default function ImageCarousel({ images }: { images: string[] }) {
         const scroller = scrollerRef.current;
         const item = itemRefs.current[index];
         if (!scroller || !item) return;
-        const scrollerRect = scroller.getBoundingClientRect();
-        const itemRect = item.getBoundingClientRect();
-        const delta = (itemRect.left + itemRect.width / 2) - (scrollerRect.left + scrollerRect.width / 2);
-        scroller.scrollTo({ left: scroller.scrollLeft + delta, behavior: "smooth" });
+        // Disable snap while scrolling — mandatory snap intercepts smooth programmatic
+        // scrolls mid-animation and re-snaps to the nearest existing point, which
+        // fights navigation back to image 0. Re-enable once the animation settles.
+        scroller.style.scrollSnapType = 'none';
+        const targetScrollLeft = item.offsetLeft + item.offsetWidth / 2 - scroller.clientWidth / 2;
+        scroller.scrollTo({ left: Math.max(0, targetScrollLeft), behavior: 'smooth' });
+        scroller.addEventListener('scrollend', () => {
+            scroller.style.removeProperty('scroll-snap-type');
+        }, { once: true });
     }
 
     function onItemClick(index: number) {
