@@ -1,9 +1,6 @@
 import { Box, Button, ButtonGroup, CardMedia, Typography } from '@mui/material';
 import { motion } from 'framer-motion';
-import GitHubIcon from '@mui/icons-material/GitHub';
-import LinkedInIcon from '@mui/icons-material/LinkedIn';
-import EmailIcon from '@mui/icons-material/Email';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import { GitHub as GitHubIcon, LinkedIn as LinkedInIcon, Email as EmailIcon, ExpandMore as ExpandMoreIcon } from '@mui/icons-material';
 import Spacer from './Spacer';
 import { easeOut, fadeInUp, staggerContainer } from './motion';
 import glassStyles from './glassStyle.module.css';
