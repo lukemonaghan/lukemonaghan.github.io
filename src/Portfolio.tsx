@@ -1,5 +1,6 @@
 import { Box, CardMedia, Chip, Container, Divider, Link, Stack, Step, StepLabel, Stepper, Typography } from "@mui/material";
 import { motion } from "framer-motion";
+import { useState } from "react";
 import Spacer from "./Spacer";
 import SectionHeader from './SectionHeader';
 import { fadeInUp, staggerContainer, viewportOnce } from './motion';
@@ -7,15 +8,7 @@ import glassStyles from './glassStyle.module.css';
 import hoverStyles from './hoverStyle.module.css';
 import styles from './Portfolio.module.css';
 import generatedExperience from './data/experience.generated.json';
-import ImageCarousel from './ImageCarousel';
-
-const GROUP_COLORS = [
-    'oklch(70% 0.13 0)',
-    'oklch(70% 0.13 200)',
-    'oklch(70% 0.13 55)',
-    'oklch(70% 0.13 155)',
-    'oklch(70% 0.13 290)',
-];
+import ProjectModal, { type ProjectModalData } from './ProjectModal';
 
 type SkillGroup = {
     category: string;
@@ -41,18 +34,21 @@ type Company = {
     projects: Project[];
 };
 
-const companies = generatedExperience as Company[];
+const companies = (generatedExperience as { companies: Company[] }).companies;
 
 export default function Portfolio() {
+    const [selectedProject, setSelectedProject] = useState<ProjectModalData | null>(null);
+
     return (
         <Container className={styles.wrapper}>
-            <SectionHeader>Oh yeah? Prove it.</SectionHeader>
-            <Experience/>
+            <SectionHeader>Experience</SectionHeader>
+            <Experience onProjectClick={setSelectedProject} />
+            <ProjectModal project={selectedProject} onClose={() => setSelectedProject(null)} />
         </Container>
     );
 }
 
-function Experience() {
+function Experience({ onProjectClick }: { onProjectClick: (p: ProjectModalData) => void }) {
     return (
         <motion.div
             initial={{ opacity: 0 }}
@@ -75,7 +71,7 @@ function Experience() {
                         <Divider sx={{ my: 3, borderColor: 'rgba(236,64,122,0.2)' }} />
                         <CompanyRoles {...company} />
                         <Divider sx={{ my: 3, borderColor: 'rgba(236,64,122,0.2)' }} />
-                        <CompanyProjects {...company} />
+                        <CompanyProjects {...company} onProjectClick={onProjectClick} />
                     </Box>
                 ))}
             </Box>
@@ -111,31 +107,42 @@ function CompanyRoles({ roles }: Company) {
     </Stepper>;
 }
 
-function CompanyProjects({ projects }: Company) {
+function CompanyProjects({ projects, onProjectClick }: Company & { onProjectClick: (p: ProjectModalData) => void }) {
     return (
-        <Container className={styles.projectsWrapper}>
-            {projects.map((project, index) => (
-                <Box
-                    key={index}
-                    boxShadow={8}
-                    className={`${styles.projectCard} ${glassStyles.innerPanel} ${hoverStyles.liftHover}`}
-                >
-                    <ImageCarousel images={project.images} />
-                    <Typography variant="h5" color="text.primary">{project.title}</Typography>
-                    <Typography variant="body1" color="text.primary">{project.description}</Typography>
-                    {project.skillGroups.length > 0 && (
-                        <Box className={styles.skillsRow}>
-                            {project.skillGroups.flatMap((group, gi) =>
-                                group.items.map((skill, si) => (
-                                    <Chip key={`${gi}-${si}`} label={skill} variant="outlined" size="small"
-                                        sx={{ color: 'white', borderColor: GROUP_COLORS[gi % GROUP_COLORS.length] }}
-                                    />
-                                ))
+        <Box className={styles.projectsGrid}>
+            {projects.map((project, index) => {
+                const chips = project.skillGroups[0]?.items.slice(0, 3) ?? [];
+                return (
+                    <Box
+                        key={index}
+                        onClick={() => onProjectClick(project)}
+                        className={`${styles.projectTile} ${hoverStyles.liftHover}`}
+                    >
+                        {project.images[0]
+                            ? <img src={project.images[0]} className={styles.tileImage} alt={project.title} />
+                            : <Box className={styles.tilePlaceholder} />
+                        }
+                        <Box className={styles.tileOverlay}>
+                            <Typography variant="h6" fontWeight={700} color="white" sx={{ lineHeight: 1.2 }}>
+                                {project.title}
+                            </Typography>
+                            {chips.length > 0 && (
+                                <Box className={styles.tileChips}>
+                                    {chips.map((skill, i) => (
+                                        <Chip key={i} label={skill} size="small" variant="outlined" sx={{
+                                            bgcolor: 'rgba(0,0,0,0.45)',
+                                            color: 'rgba(255,255,255,0.85)',
+                                            borderColor: 'rgba(255,255,255,0.15)',
+                                            fontSize: '0.65rem',
+                                            height: 20,
+                                        }} />
+                                    ))}
+                                </Box>
                             )}
                         </Box>
-                    )}
-                </Box>
-            ))}
-        </Container>
+                    </Box>
+                );
+            })}
+        </Box>
     );
 }

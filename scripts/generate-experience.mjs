@@ -10,6 +10,7 @@ const ROOT = path.resolve(import.meta.dirname, "..");
 const WORK_BRAIN_DIR = path.join(ROOT, "work-brain");
 const ROLES_DIR = path.join(WORK_BRAIN_DIR, "history", "roles");
 const PROJECTS_DIR = path.join(WORK_BRAIN_DIR, "history", "projects");
+const AGENTS_FILE = path.join(WORK_BRAIN_DIR, "AGENTS.md");
 const OUT_FILE = path.join(ROOT, "src", "data", "experience.generated.json");
 const ASSET_OUT_DIR = path.join(ROOT, "public", "work-brain");
 
@@ -87,6 +88,83 @@ function parsePeriod(period) {
     };
 }
 
+// Strip Obsidian wiki-links to their display text or last path segment.
+function stripWikiLink(text) {
+    return text
+        .replace(/\[\[([^\]]*)\|([^\]]*)\]\]/g, (_, _path, display) => display.trim())
+        .replace(/\[\[([^\]]+)\]\]/g, (_, p) => p.split("/").pop().trim())
+        .trim();
+}
+
+// Extract the href from a markdown link, returning the plain text if no link found.
+function extractMarkdownUrl(text) {
+    const m = text.match(/\[([^\]]+)\]\(([^)]+)\)/);
+    return m ? m[2] : text.trim();
+}
+
+function parseAgentsTable(raw, keys) {
+    const rows = [];
+    let pastHeader = false;
+    for (const line of raw.split("\n")) {
+        if (!line.trim().startsWith("|")) continue;
+        // Replace \| inside wiki-links so it doesn't split the column
+        const escaped = line.replace(/\\\|/g, "\x00");
+        const cols = escaped
+            .split("|")
+            .map((c) => c.replace(/\x00/g, "|").trim())
+            .filter((_, i, a) => i > 0 && i < a.length - 1);
+        if (cols.length < 2) continue;
+        if (/^-+$/.test(cols[0].trim())) { pastHeader = true; continue; }
+        if (!pastHeader) continue;
+        const row = {};
+        row[keys[0]] = stripWikiLink(cols[0]);
+        row[keys[1]] = stripWikiLink(cols[1]);
+        rows.push(row);
+    }
+    return rows;
+}
+
+function parseAgentsMd(filePath) {
+    if (!fs.existsSync(filePath)) return null;
+    const raw = fs.readFileSync(filePath, "utf-8");
+
+    // Split into sections keyed by ## heading (skip --- dividers)
+    const sections = {};
+    let currentSection = null;
+    let currentLines = [];
+    for (const line of raw.split("\n")) {
+        if (line.startsWith("## ")) {
+            if (currentSection) sections[currentSection] = currentLines.join("\n").trim();
+            currentSection = line.slice(3).trim().toLowerCase();
+            currentLines = [];
+        } else if (currentSection && line.trim() !== "---") {
+            currentLines.push(line);
+        }
+    }
+    if (currentSection) sections[currentSection] = currentLines.join("\n").trim();
+
+    const summary = sections["summary"] ?? "";
+
+    const achievements = (sections["key achievements"] ?? "")
+        .split("\n")
+        .filter((l) => l.trim().startsWith("- "))
+        .map((l) => l.replace(/^-\s*/, "").replace(/\*\*/g, "").trim());
+
+    const skills = parseAgentsTable(sections["skills"] ?? "", ["area", "detail"]);
+    const capabilities = parseAgentsTable(sections["capabilities"] ?? "", ["name", "summary"]);
+
+    const contactRows = parseAgentsTable(sections["contact details"] ?? "", ["label", "value"]);
+    const contactKeywords = { website: "website", email: "email", linkedin: "linkedin", github: "github" };
+    const contact = {};
+    for (const { label, value } of contactRows) {
+        const lower = label.toLowerCase();
+        const key = Object.keys(contactKeywords).find((k) => lower.includes(k));
+        if (key) contact[key] = extractMarkdownUrl(value);
+    }
+
+    return { summary, achievements, skills, capabilities, contact };
+}
+
 function copyAsset(relPath) {
     if (!relPath) return "";
     const src = path.join(WORK_BRAIN_DIR, relPath);
@@ -142,6 +220,7 @@ for (const { data, content, file } of projectDocs) {
         description: extractSection(content, "Overview"),
         skillGroups: parseSkillTable(content),
         images: (data.images ?? []).map(copyAsset).filter(Boolean),
+        focused: data.focused === true,
     });
 }
 
@@ -160,7 +239,10 @@ for (const entry of Object.values(companies)) {
 ranked.sort((a, b) => (a.isCurrent !== b.isCurrent ? Number(b.isCurrent) - Number(a.isCurrent) : b.latestStart - a.latestStart));
 const sortedCompanies = ranked.map((r) => r.entry);
 
-fs.mkdirSync(path.dirname(OUT_FILE), { recursive: true });
-fs.writeFileSync(OUT_FILE, JSON.stringify(sortedCompanies, null, 2));
+const profile = parseAgentsMd(AGENTS_FILE);
 
-console.log(`Generated experience data for ${sortedCompanies.length} company/companies -> ${path.relative(ROOT, OUT_FILE)}`);
+fs.mkdirSync(path.dirname(OUT_FILE), { recursive: true });
+fs.writeFileSync(OUT_FILE, JSON.stringify({ profile, companies: sortedCompanies }, null, 2));
+
+const profileNote = profile ? " (+ profile from AGENTS.md)" : "";
+console.log(`Generated experience data for ${sortedCompanies.length} company/companies${profileNote} -> ${path.relative(ROOT, OUT_FILE)}`);

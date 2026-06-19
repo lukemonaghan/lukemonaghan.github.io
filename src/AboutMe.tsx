@@ -1,16 +1,19 @@
+import { Fragment } from 'react';
 import { Box, Button, CardMedia, Container, Stack, Typography } from '@mui/material';
 import { motion } from 'framer-motion';
 import Spacer from './Spacer';
-import SectionHeader from './SectionHeader';
 import { fadeInUp, viewportOnce } from './motion';
 import glassStyles from './glassStyle.module.css';
 import hoverStyles from './hoverStyle.module.css';
 import styles from './AboutMe.module.css';
+import experienceData from './data/experience.generated.json';
+
+const profile = (experienceData as { profile: { summary: string } }).profile;
+const summaryParagraphs = profile.summary.split(/\n{2,}/).map((p) => p.replace(/\n/g, ' ').trim()).filter(Boolean);
 
 export default function AboutMe() {
     return (
         <Container className={styles.wrapper}>
-            <SectionHeader>Hey! Who are you?</SectionHeader>
             <Box
                 component={motion.div}
                 initial="hidden"
@@ -30,11 +33,15 @@ export default function AboutMe() {
                     <Container>
                         <Typography variant="h4" color="text.primary">Heyo, I'm Luke</Typography>
                         <Spacer />
-                        <Typography variant="h5" color="text.primary">A multi-disciplinary creative technologist focusing on engaging experiences in Canberra, Australia.</Typography>
+                        <Typography variant="h5" color="text.primary">Lead Developer, Technical Product Manager and Creative Technologist based in Canberra, Australia with a career spanning game development, immersive sports experiences, and enterprise SaaS.</Typography>
                         <Spacer />
-                        <Typography variant="body1" color="text.primary">I'm passionate about pushing the boundaries of what's possible and building interactivity into everyday life. </Typography>
-                        <Spacer />
-                        <Typography variant="body1" color="text.primary">Throughout my career so far i've had the opportunity to work on a wide range of projects and products, from mobile games and applications, AR/VR experiences to PaaS platforms. I'm also a big believer in open source and the power of community, and I've spent time contributing to fan projects and initiatives helping grow large fan bases and empowering colleagues to pursue their dreams.<p /> In my free time, I'm a passionate tinkerer. I love diving into projects that combine technology with creativity. Whether it's building custom electronics, experimenting with 3D printing, or learning a new programming language, I'm always looking for new ways to push my boundaries and learn something new. I also have a deep appreciation for nature and enjoy spending time outdoors gardening, looking after my many fish, hanging out with my cats, and exploring natures beauty.<p /> If anything here interests you see the details below on how we can get in contact, im always excited to hear about amazing projects.</Typography>
+                        {summaryParagraphs.map((para, i) => (
+                            <Fragment key={i}>
+                                <Typography variant="body1" color="text.primary">{para}</Typography>
+                                <Spacer />
+                            </Fragment>
+                        ))}
+                        <Typography variant="body1" color="text.primary">Outside of work I'm a hands-on tinkerer — 3D printing, custom electronics, and whatever catches my curiosity. I have a deep appreciation for anything that grows: a garden full of plants, a tank full of fish, and two cats who are largely unimpressed by all of it.</Typography>
                         <Spacer />
                         <Button color="secondary" href="#contact">Contact Me</Button>
                     </Container>
