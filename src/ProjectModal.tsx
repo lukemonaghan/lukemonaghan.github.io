@@ -2,6 +2,7 @@ import { Box, Chip, Dialog, DialogContent, DialogTitle, Divider, IconButton, Typ
 import ImageCarousel from "./ImageCarousel";
 import glassStyles from "./glassStyle.module.css";
 import styles from "./ProjectModal.module.css";
+import MarkdownText from "./MarkdownText";
 
 const GROUP_COLORS = [
     'oklch(70% 0.13 0)',
@@ -56,9 +57,7 @@ export default function ProjectModal({ project, onClose }: Props) {
                             </Box>
                         )}
 
-                        <Typography variant="body1" color="text.primary" sx={{ mb: 2 }}>
-                            {project.description}
-                        </Typography>
+                        {project.description && <MarkdownText>{project.description}</MarkdownText>}
 
                         {project.skillGroups.length > 0 && (
                             <>

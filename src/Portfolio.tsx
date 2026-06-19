@@ -9,6 +9,7 @@ import hoverStyles from './hoverStyle.module.css';
 import styles from './Portfolio.module.css';
 import generatedExperience from './data/experience.generated.json';
 import ProjectModal, { type ProjectModalData } from './ProjectModal';
+import MarkdownText from './MarkdownText';
 
 type SkillGroup = {
     category: string;
@@ -92,7 +93,7 @@ function CompanyHeader({ logo, title, kind, location, date, siteUrl, description
             <Spacer size={0.5} />
             {siteUrl && <Link color="text.primary" href={siteUrl}>{siteUrl}</Link>}
             <Spacer size={0.5} />
-            <Typography variant="body1" color="text.primary">{description}</Typography>
+            {description && <MarkdownText>{description}</MarkdownText>}
         </Stack>
     </Stack>;
 }

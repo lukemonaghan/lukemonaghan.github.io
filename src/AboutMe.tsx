@@ -41,7 +41,7 @@ export default function AboutMe() {
                                 <Spacer />
                             </Fragment>
                         ))}
-                        <Typography variant="body1" color="text.primary">Outside of work I'm a hands-on tinkerer — 3D printing, custom electronics, and whatever catches my curiosity. I have a deep appreciation for anything that grows: a garden full of plants, a tank full of fish, and two cats who are largely unimpressed by all of it.</Typography>
+                        <Typography variant="body1" color="text.primary">Outside of work I'm a hands-on tinkerer. 3D printing, custom electronics, and whatever catches my curiosity. I have a deep appreciation for anything that grows: a garden full of plants, a tank full of fish, and two cats who are largely unimpressed by all of it.</Typography>
                         <Spacer />
                         <Button color="secondary" href="#contact">Contact Me</Button>
                     </Container>
