@@ -4,7 +4,6 @@ import { motion } from 'framer-motion';
 import Spacer from './Spacer';
 import { fadeInUp, viewportOnce } from './motion';
 import glassStyles from './glassStyle.module.css';
-import hoverStyles from './hoverStyle.module.css';
 import styles from './AboutMe.module.css';
 import experienceData from './data/experience.generated.json';
 
@@ -21,10 +20,10 @@ export default function AboutMe() {
                 viewport={viewportOnce}
                 variants={fadeInUp}
                 boxShadow={8}
-                className={`${styles.panel} ${glassStyles.glassPanel} ${hoverStyles.borderStyle}`}
+                className={`${styles.panel} ${glassStyles.glassPanel}`}
             >
                 <Stack direction={{ xs: 'column', sm: 'row' }}>
-                    <Box className={`${styles.imageBox} ${hoverStyles.liftHover}`}>
+                    <Box className={styles.imageBox}>
                         <CardMedia
                             component="img"
                             image="me.jpg"

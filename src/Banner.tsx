@@ -40,6 +40,11 @@ export default function BannerImage() {
             Making rocks smart daily
           </Typography>
         </motion.div>
+        <motion.div variants={fadeInUp}>
+          <Typography className={styles.tagsText} variant="subtitle1" color="secondary">
+            Web · Cloud · Unity · Consulting · Leadership · Mentoring
+          </Typography>
+        </motion.div>
         <Spacer />
         <motion.div variants={fadeInUp}>
           <Links />
