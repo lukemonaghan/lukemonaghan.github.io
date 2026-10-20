@@ -27,3 +27,4 @@ public/work-brain/
 *.njsproj
 *.sln
 *.sw?
+.playwright-mcp
