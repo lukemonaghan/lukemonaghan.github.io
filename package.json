@@ -35,6 +35,6 @@
     "gray-matter": "^2.0.1",
     "typescript": "^5.8.0",
     "typescript-eslint": "^8.0.1",
-    "vite": "^8.0.16"
+    "vite": "^8.3.5"
   }
 }
